@@ -25,3 +25,7 @@ bin/
 # Logs
 logs/
 *.log
+
+# Fabric
+remappedSrc/
+.fabric/
