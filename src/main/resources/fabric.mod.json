@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "id": "homepoints",
+  "version": "${version}",
+  "name": "HomePoints",
+  "description": "",
+  "authors": [
+    "Pyro18"
+  ],
+  "contact": {
+    "sources": ""
+  },
+  "license": "MIT",
+  "icon": "assets/homepoints/icon.png",
+  "environment": "server",
+  "entrypoints": {
+    "fabric-datagen": [
+      "dev.pyro.homepoints.client.HomePointsDataGenerator"
+    ],
+    "main": [
+      "dev.pyro.homepoints.HomePoints"
+    ]
+  },
+  "mixins": [
+    "homepoints.mixins.json",
+    {
+      "config": "homepoints.client.mixins.json",
+      "environment": "client"
+    }
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
