@@ -30,17 +30,7 @@ public class Messages {
                 .append(Text.literal(homeName).formatted(Formatting.AQUA))
                 .append(Text.literal(" with you! ").formatted(Formatting.YELLOW))
                 .append(Text.literal("[Accept]")
-                        .styled(style -> style
-                                .withColor(Formatting.GREEN)
-                                .withBold(true)
-                                .withClickEvent(new ClickEvent(
-                                        ClickEvent.Action.RUN_COMMAND,
-                                        "/acceptshare " + fromPlayer + " " + homeName
-                                ))
-                                .withHoverEvent(new HoverEvent(
-                                        HoverEvent.Action.SHOW_TEXT,
-                                        Text.literal("Click to accept and add to your homes")
-                                ))
-                        ));
+                        .formatted(Formatting.GREEN)
+                );
     }
 }

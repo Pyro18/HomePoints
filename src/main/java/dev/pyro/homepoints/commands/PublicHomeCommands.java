@@ -71,9 +71,9 @@ public class PublicHomeCommands {
             return 0;
         }
 
-        HomesManager manager = HomesManager.get(player.getServer());
+        HomesManager manager = HomesManager.get(context.getSource().getServer());
         BlockPos pos = player.getBlockPos();
-        RegistryKey<World> dimension = player.getWorld().getRegistryKey();
+        RegistryKey<World> dimension = context.getSource().getWorld().getRegistryKey();
 
         Home existingHome = manager.getPublicHome(homeName);
         if (existingHome != null && !existingHome.getOwner().equals(player.getUuidAsString())) {
@@ -108,7 +108,7 @@ public class PublicHomeCommands {
         }
 
         String homeName = StringArgumentType.getString(context, "name");
-        HomesManager manager = HomesManager.get(player.getServer());
+        HomesManager manager = HomesManager.get(context.getSource().getServer());
         Home home = manager.getPublicHome(homeName);
 
         if (home == null) {
@@ -134,7 +134,7 @@ public class PublicHomeCommands {
         }
 
         String homeName = StringArgumentType.getString(context, "name");
-        HomesManager manager = HomesManager.get(player.getServer());
+        HomesManager manager = HomesManager.get(context.getSource().getServer());
         Home home = manager.getPublicHome(homeName);
 
         if (home == null) {
@@ -142,7 +142,7 @@ public class PublicHomeCommands {
             return 0;
         }
 
-        ServerWorld targetWorld = player.getServer().getWorld(home.getDimension());
+        ServerWorld targetWorld = context.getSource().getServer().getWorld(home.getDimension());
         if (targetWorld == null) {
             player.sendMessage(Messages.error("Target dimension not found!"));
             return 0;
@@ -150,11 +150,11 @@ public class PublicHomeCommands {
 
         BlockPos pos = home.getPosition();
 
-        if (player.getWorld().getRegistryKey() == home.getDimension()) {
-            player.teleport(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
+        if (context.getSource().getWorld().getRegistryKey() == home.getDimension()) {
+            player.teleport(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, true);
         } else {
             player.teleport(targetWorld, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5,
-                    home.getYaw(), home.getPitch());
+                    Set.of(), home.getYaw(), home.getPitch(), true);
         }
 
         player.setYaw(home.getYaw());
@@ -170,7 +170,7 @@ public class PublicHomeCommands {
             return 0;
         }
 
-        HomesManager manager = HomesManager.get(player.getServer());
+        HomesManager manager = HomesManager.get(context.getSource().getServer());
         PublicHomesData data = manager.getPublicHomesData();
         Set<String> homeNames = data.getPublicHomeNames();
 

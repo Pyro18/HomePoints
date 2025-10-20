@@ -24,7 +24,7 @@ public class ShareHomeCommand {
 
     private static final SuggestionProvider<ServerCommandSource> SUGGEST_PLAYER_HOMES = (context, builder) -> {
         if (context.getSource().getEntity() instanceof ServerPlayerEntity player) {
-            HomesManager manager = HomesManager.get(player.getServer());
+            HomesManager manager = HomesManager.get(context.getSource().getServer());
             PlayerHomesData data = manager.getPlayerData(player.getUuid());
             return CommandSource.suggestMatching(data.getHomeNames(), builder);
         }
@@ -71,7 +71,7 @@ public class ShareHomeCommand {
             return 0;
         }
 
-        HomesManager manager = HomesManager.get(fromPlayer.getServer());
+        HomesManager manager = HomesManager.get(context.getSource().getServer());
         Home home = manager.getPlayerHome(fromPlayer.getUuid(), homeName);
 
         if (home == null) {
@@ -104,7 +104,7 @@ public class ShareHomeCommand {
         String fromPlayerName = StringArgumentType.getString(context, "from_player");
         String homeName = StringArgumentType.getString(context, "home_name");
 
-        ServerPlayerEntity fromPlayer = toPlayer.getServer().getPlayerManager()
+        ServerPlayerEntity fromPlayer = context.getSource().getServer().getPlayerManager()
                 .getPlayer(fromPlayerName);
 
         if (fromPlayer == null) {
@@ -119,7 +119,7 @@ public class ShareHomeCommand {
             return 0;
         }
 
-        HomesManager manager = HomesManager.get(toPlayer.getServer());
+        HomesManager manager = HomesManager.get(context.getSource().getServer());
 
         Home originalHome = manager.getPlayerHome(fromPlayer.getUuid(), homeName);
         if (originalHome == null) {

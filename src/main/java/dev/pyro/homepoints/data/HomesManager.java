@@ -26,11 +26,8 @@ public class HomesManager extends PersistentState {
     public static HomesManager get(MinecraftServer server) {
         PersistentStateManager manager = server.getWorld(World.OVERWORLD).getPersistentStateManager();
         return manager.getOrCreate(
-                new Type<>(
-                        HomesManager::new,
-                        HomesManager::fromNbt,
-                        null
-                ),
+                HomesManager::new,
+                HomesManager::fromNbt,
                 DATA_NAME
         );
     }
@@ -38,17 +35,17 @@ public class HomesManager extends PersistentState {
     public static HomesManager fromNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
         HomesManager manager = new HomesManager();
 
-        if (nbt.contains("playerHomes", 9)) { // 9 = TAG_LIST
-            NbtList playerList = nbt.getList("playerHomes", 10); // 10 = TAG_COMPOUND
+        if (nbt.contains("playerHomes")) {
+            NbtList playerList = nbt.getList("playerHomes");
             for (int i = 0; i < playerList.size(); i++) {
                 NbtCompound playerNbt = playerList.getCompound(i);
-                UUID playerUUID = playerNbt.getUuid("uuid");
+                UUID playerUUID = UUID.fromString(playerNbt.getString("uuid"));
                 PlayerHomesData data = PlayerHomesData.fromNbt(playerNbt.getCompound("data"));
                 manager.playerHomes.put(playerUUID, data);
             }
         }
 
-        if (nbt.contains("publicHomes", 10)) { // 10 = TAG_COMPOUND
+        if (nbt.contains("publicHomes")) {
             NbtCompound publicNbt = nbt.getCompound("publicHomes");
             PublicHomesData loaded = PublicHomesData.fromNbt(publicNbt);
             for (String homeName : loaded.getPublicHomeNames()) {
@@ -60,11 +57,11 @@ public class HomesManager extends PersistentState {
     }
 
     @Override
-    public NbtCompound writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
+    public NbtCompound writeNbt(NbtCompound nbt) {
         NbtList playerList = new NbtList();
         for (Map.Entry<UUID, PlayerHomesData> entry : playerHomes.entrySet()) {
             NbtCompound playerNbt = new NbtCompound();
-            playerNbt.putUuid("uuid", entry.getKey());
+            playerNbt.putString("uuid", entry.getKey().toString());
             playerNbt.put("data", entry.getValue().toNbt());
             playerList.add(playerNbt);
         }

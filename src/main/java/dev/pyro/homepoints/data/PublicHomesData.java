@@ -49,10 +49,11 @@ public class PublicHomesData {
     public static PublicHomesData fromNbt(NbtCompound nbt) {
         PublicHomesData data = new PublicHomesData();
 
-        if (nbt.contains("publicHomes", 9)) { // 9 = TAG_LIST
-            NbtList homesList = nbt.getList("publicHomes", 10); // 10 = TAG_COMPOUND
+        if (nbt.contains("publicHomes")) {
+            NbtList homesList = nbt.getList("publicHomes");
             for (int i = 0; i < homesList.size(); i++) {
-                Home home = Home.fromNbt(homesList.getCompound(i));
+                NbtCompound homeNbt = homesList.getCompound(i);
+                Home home = Home.fromNbt(homeNbt);
                 data.publicHomes.put(home.getName(), home);
             }
         }

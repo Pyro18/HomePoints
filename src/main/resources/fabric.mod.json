@@ -3,34 +3,24 @@
   "id": "homepoints",
   "version": "${version}",
   "name": "HomePoints",
-  "description": "",
+  "description": "Server-side home management mod with private and public waypoints",
   "authors": [
     "Pyro18"
   ],
   "contact": {
-    "sources": ""
+    "sources": "https://github.com/Pyro18/HomePoints"
   },
   "license": "MIT",
   "icon": "assets/homepoints/icon.png",
   "environment": "server",
   "entrypoints": {
-    "fabric-datagen": [
-      "dev.pyro.homepoints.client.HomePointsDataGenerator"
-    ],
     "main": [
       "dev.pyro.homepoints.HomePoints"
     ]
   },
-  "mixins": [
-    "homepoints.mixins.json",
-    {
-      "config": "homepoints.client.mixins.json",
-      "environment": "client"
-    }
-  ],
   "depends": {
     "fabricloader": ">=${loader_version}",
-    "fabric": "*",
+    "fabric-api": "*",
     "minecraft": "${minecraft_version}"
   }
 }

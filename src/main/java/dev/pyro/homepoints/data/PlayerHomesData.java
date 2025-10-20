@@ -59,10 +59,11 @@ public class PlayerHomesData {
     public static PlayerHomesData fromNbt(NbtCompound nbt) {
         PlayerHomesData data = new PlayerHomesData();
 
-        if (nbt.contains("homes", 9)) { // 9 = TAG_LIST
-            NbtList homesList = nbt.getList("homes", 10); // 10 = TAG_COMPOUND
+        if (nbt.contains("homes")) {
+            NbtList homesList = nbt.getList("homes");
             for (int i = 0; i < homesList.size(); i++) {
-                Home home = Home.fromNbt(homesList.getCompound(i));
+                NbtCompound homeNbt = homesList.getCompound(i);
+                Home home = Home.fromNbt(homeNbt);
                 data.homes.put(home.getName(), home);
             }
         }
